@@ -1,0 +1,57 @@
+{
+    "Lucas_R_": {
+        "nome": "Lucas Renan dos Santos",
+        "senha": "273101",
+        "login": "Lucas_R_",
+        "foto": "WhatsApp_Image_2025-04-17_at_14.54.56.jpeg",
+        "is_admin": true,
+        "curso": "Tec. Desenvolvimento de Sistema",
+        "turno": "Noite",
+        "email": "lucasrenan20188@gmail.com",
+        "verificado": true
+    },
+    "teste": {
+        "nome": "testee",
+        "senha": "teste",
+        "login": "teste",
+        "foto": "login_padrao.png",
+        "is_admin": false,
+        "curso": "teste",
+        "turno": "Manh\u00e3",
+        "email": ""
+    },
+    "Lucas_R": {
+        "nome": "Lucas Renan dos Santos",
+        "senha": "273101",
+        "login": "Lucas_R",
+        "foto": "login_padrao.png",
+        "is_admin": false,
+        "curso": "Tec. Desenvolvimento de SIstemas",
+        "turno": "Noite",
+        "email": "lucasrenan20188@gmail.com",
+        "verificado": false,
+        "codigo_verificacao": "XNRLQtaFeFqNShIjPWPI"
+    },
+    "tlgddd": {
+        "nome": "tlgddd",
+        "senha": "tlgddd",
+        "login": "tlgddd",
+        "foto": "login_padrao.png",
+        "is_admin": false,
+        "curso": "tlgddd",
+        "turno": "Manh\u00e3",
+        "email": "lucas.r.santos56@aluno.senai.br"
+    },
+    "taaaaa": {
+        "nome": "taaaaa",
+        "senha": "taaaaa",
+        "login": "taaaaa",
+        "foto": "login_padrao.png",
+        "is_admin": false,
+        "curso": "taaaaa",
+        "turno": "Manh\u00e3",
+        "email": "llawlietrenan@gmail.com",
+        "verificado": false,
+        "codigo_verificacao": null
+    }
+}

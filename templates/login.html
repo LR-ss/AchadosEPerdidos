@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='senai_2.png') }}" type="image/png">
+
+</head>
+<body>
+    <h1 align="center">Login</h1>
+    <form method="POST">
+        <label for="login">Apelido/Login:</label>
+        <input type="text" id="login" name="login" required><br><br>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+        <input type="checkbox" id="mostrar_senha" onclick="toggleSenha()"> Mostrar Senha<br><br>
+        <script src="{{ url_for('static', filename='js/script_3.js') }}"></script>
+
+        <button type="submit">Entrar</button>
+    </form>
+    <p align="center">Ainda não tem conta? <a href="{{ url_for('cadastro') }}">Cadastre-se</a></p>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+          {% endfor %}
+      {% endif %}
+    {% endwith %}
+ <script src="{{ url_for('static', filename='js/script_4.js') }}"></script>
+</body>
+</html>

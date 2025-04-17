@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil de {{ usuario.nome }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+</head>
+<body>
+  <div class="perfil-container">
+    <img
+      src="{{ url_for('static', filename='imagens/' + (usuario.foto or 'login_padrao.png')) }}"
+      alt="Foto de perfil"
+      class="perfil-grande">
+    <h2>{{ usuario.nome }}</h2>
+    <p><strong>Apelido/Login:</strong> {{ usuario.login }}</p>
+    <p><strong>Curso:</strong> {{ usuario.curso }}</p>
+    <p><strong>Turno:</strong> {{ usuario.turno }}</p>
+
+    <a href="{{ url_for('index') }}" class="voltar-btn">← Voltar</a>
+  </div>
+</body>
+</html>

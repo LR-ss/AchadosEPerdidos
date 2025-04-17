@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='senai_2.png') }}" type="image/png">
+    <style>
+        .perfil-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .perfil-container img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            cursor: pointer;
+        }
+        .perfil-container p {
+            margin: 10px 0 0;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Cadastro</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="perfil-container">
+            <img id="imgPerfil" src="{{ url_for('static', filename='imagens/login_padrao.png') }}"
+                 alt="Clique na imagem para alterar sua foto de perfil"
+                 onclick="document.getElementById('foto').click();">
+            <p>Clique para alterar sua foto de perfil</p>
+            <input type="file" id="foto" name="foto" style="display:none;" accept="image/*" onchange="previewImagem(event)">
+
+        </div>
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="login">Apelido/Login:</label>
+        <input type="text" id="login" name="login" required><br><br>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+        <input type="checkbox" id="mostrar_senha" onclick="toggleSenha()"> Mostrar Senha<br><br>
+        <script src="{{ url_for('static', filename='js/script_3.js') }}"></script>
+
+        <label>Curso que está cursando:</label>
+        <input type="text" name="curso" placeholder="Ex: Tec. Desenvolvimento de Sistemas, Eletrônica, Professor" required>
+      
+        <label>Turno:</label>
+        <select name="turno" required>
+          <option value="Manhã">Manhã</option>
+          <option value="Tarde">Tarde</option>
+          <option value="Noite">Noite</option>
+        </select><br><br>
+      
+        <label>E-mail (opcional):</label>
+        <input type="email" name="email">
+
+        <button type="submit">Cadastrar</button>
+    </form>
+    <p align="center">Já tem conta? <a href="{{ url_for('login') }}">Faça login</a></p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+          {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <script>
+        function previewImagem(event) {
+            var output = document.getElementById('imgPerfil');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+  <script src="{{ url_for('static', filename='js/script_4.js') }}"></script>
+</body>
+</html>

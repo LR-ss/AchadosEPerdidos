@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SENAI Search - Página Inicial</title>
+    <link rel="icon" href="{{ url_for('static', filename='senai_2.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_.css') }}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar">
+      <div>
+          {% if usuario %}
+          <div class="perfil-sidebar">
+            <a href="{{ url_for('perfil') }}"><img src="{{ url_for('static', filename='imagens/' + (usuario.foto or 'login_padrao.png')) }}" alt="Perfil"></a>
+            <a href="{{ url_for('perfil') }}"><p>{{ usuario.nome }}</p></a>
+            {% if usuario.verificado %}
+           <img src="{{ url_for('static', filename='verificado.jpeg') }}" alt="Verificado" class="selo-verificado">
+            {% endif %}
+
+          </div>
+          {% endif %}
+          <nav class="opcoes">
+              <ul>
+                  {% if not usuario %}
+                  <li><a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.png') }}"><span>Login</span></a></li>
+                  <br>
+                  <li><a href="{{ url_for('cadastro') }}"><img src="{{ url_for('static', filename='cadastro.png') }}"><span>Registrar</span></a></li>
+                  <br>
+                  {% endif %}
+                  <li><a href="{{ url_for('regras') }}"><img src="{{ url_for('static', filename='regras.png') }}"><span>Regras</span></a></li>
+                  <br>
+                  {% if usuario %}
+                  <li><a href="{{ url_for('novo_item') }}"><img src="{{ url_for('static', filename='novo_item.png') }}"><span>Novo Item</span></a></li>
+                  <br>
+                  {% if usuario.is_admin %}
+                  <li><a href="{{ url_for('listar_usuarios') }}">
+                    <img src="{{ url_for('static', filename='usuarios.png') }}"><span>Gerenciar</span>
+                  </a></li>
+                {% endif %}
+                {% endif %}
+              </ul>
+          </nav>
+      </div>
+      {% if usuario %}
+      <div class="logout-sidebar">
+          <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.png') }}"><span>Logout</span></a>
+      </div>
+      {% endif %}
+  </div>
+
+  <div class="main-content">
+      <header class="main-header">
+        <img src="{{ url_for('static', filename='senai.png') }}" alt="SENAI" class="logo" width="200">
+          <div class="branding">
+              <div>
+                <h1><i>SENAI</i> Search <img src="{{ url_for('static', filename='lupa.png') }}" width="50"></h1>
+                <br>
+                  <h2>Página Inicial</h2>
+              </div>
+          </div>
+          <div class="search-container">
+              <img id="search-icon" src="{{ url_for('static', filename='lupa.png') }}" alt="Buscar">
+              <form method="GET" action="{{ url_for('index') }}">
+                  <input id="search-input" type="text" name="q" placeholder="Buscar item..." value="{{ query }}">
+              </form>
+              {% if usuario %}
+              <a href="{{ url_for('novo_item') }}"><button class="novo-item-btn">Novo Item</button></a>
+              {% endif %}
+          </div>
+      </header>
+
+      <hr>
+      <br>
+      <br>
+
+      <section class="items-grid">
+          {% for item in itens %}
+          {% set usuario_autor = item.usuario %}
+          <div class="card">
+            <div class="card-header">
+              <a href="{{ url_for('user_profile', login=usuario_autor.login) }}">
+                <img
+                  src="{{ url_for('static', filename='imagens/' + usuario_autor.foto) }}"
+                  alt="Perfil"
+                  class="card-user-img">
+              </a>
+              {% if item.usuario.verificado %}
+              <img
+                src="{{ url_for('static', filename='verificado.jpeg') }}"
+                alt="Verificado"
+                class="selo-verificado">
+            {% endif %}
+              <div>
+                <a href="{{ url_for('user_profile', login=usuario_autor.login) }}">
+                  <p class="card-user-name">{{ usuario_autor.nome }}</p>
+                </a>
+                <p class="card-date">{{ item.data_cadastro }}</p>
+              </div>
+            </div>
+              {% set imagens_validas = item.imagens 
+                | default([]) 
+                | reject('equalto', 'no_image.png') 
+                | reject('equalto', '') 
+                | list %}
+           
+           {% if imagens_validas %}
+             <div class="card-images">
+               {% for imagem in imagens_validas %}
+                 <img
+                   src="{{ url_for('static', filename='imagens/' ~ imagem) }}"
+                   alt="Foto do item"
+                   onclick="abrirModal(this.src)">
+               {% endfor %}
+             </div>
+           {% endif %}
+              <div class="card-body">
+                  <h3>{{ item.nome }}</h3>
+                  <p class="{{ 'estado-entregue' if item.estado=='Entregue' else 'estado-nao-entregue' }}">{{ item.estado }}</p>                  
+                  <button class="botao_" onclick="toggleDetails('{{ item.id }}')">Mostrar Mais</button>
+                  <div id="details-{{ item.id }}" class="details">
+                      <p><strong>Descrição:</strong> {{ item.descricao }}</p>
+                      <p><strong>Onde foi encontrado:</strong> {{ item.local_encontrado }}</p>
+                      <p><strong>Onde está guardado:</strong> {{ item.local_guardado }}</p>
+                      {% if item.contato %}
+                      <p><strong>Contato:</strong> {{ item.contato }}</p>
+                      {% endif %}
+
+                  {% if usuario and item.usuario.login == usuario.login %}
+                      <form method="POST" action="{{ url_for('alterar_estado', item_id=item.id) }}">
+                          <button class="botao_" type="submit">Alterar Estado</button>
+                      </form>
+                  {% endif %}
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+                  {% if usuario %}
+                  <form action="{{ url_for('denunciar_item', item_id=item.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="botao_denuncia">Denunciar</button>
+                  </form>
+                {% endif %}
+                
+                {% if item.denuncias %}
+              <p><strong>Denúncias:</strong> {{ item.denuncias|length }}</p>
+              {% else %}
+              <p><strong>Denúncias:</strong> 0</p>
+              {% endif %}
+              <br>
+              <br>
+              {% if usuario and (usuario.login == item.usuario.login or usuario.is_admin) %}
+              <form action="{{ url_for('delete_item', item_id=item.id) }}" method="post" style="display:inline;">
+                <button class="botao_" type="submit" onclick="return confirm('Tem certeza que deseja excluir este item?');" style="border: none; background: none;">
+                  <img src="{{ url_for('static', filename='lixeira.png') }}" alt="Excluir" style="width:24px; height:24px;">
+                </button>
+              </form>
+            {% endif %}
+              </div>
+          </div>
+          {% endfor %}
+      </section>
+  </div>
+
+  <!-- Modal de imagem -->
+  <div id="modalImagem" class="modal" onclick="fecharModal()">
+      <span class="close" onclick="fecharModal()">&times;</span>
+      <img class="modal-content" id="imgAmpliada">
+  </div>
+
+  <script>
+      // Foca no input ao clicar na lupa
+      document.getElementById('search-icon').addEventListener('click', function() {
+          document.getElementById('search-input').focus();
+      });
+      // Toggle detalhes
+      function toggleDetails(id) {
+          const el = document.getElementById('details-' + id);
+          el.style.display = el.style.display === 'block' ? 'none' : 'block';
+      }
+      function fecharModal() {
+          document.getElementById('modalImagem').style.display = 'none';
+      }
+  </script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/script_2.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/script_4.js') }}"></script>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for message in messages %}
+      <div class="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+<hr>
+<footer>
+  <p>&copy; 2025 <i>SENAI</i> Search - Desenvolvido por <a href="https://linktr.ee/lucasrrenan" target="_blank"><u> Lucas Renan</u></a>. Todos os direitos reservados.</p>
+</footer>
+</body>
+</html>

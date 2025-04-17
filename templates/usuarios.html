@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Área Administrativa - Lista de Usuários</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='senai_2.png') }}" type="image/png">
+    <style>
+        .usuario {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #f3f3f3;
+            border-radius: 8px;
+        }
+        .usuario-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .usuario-info img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+        }
+        .delete-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .delete-btn img {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Lista de Usuários</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Página Inicial</a>
+        </nav>
+    </header>
+    
+    <main>
+        {% if lista_usuarios %}
+            {% for usuario in lista_usuarios %}
+            <div class="usuario">
+                <div class="usuario-info">
+                    <img src="{{ url_for('static', filename='imagens/' + usuario.foto) }}" alt="Foto de perfil">
+                    <div>
+                        <p><strong>Nome:</strong> {{ usuario.nome }}</p>
+                        <p><strong>Login:</strong> {{ usuario.login }}</p>
+                    </div>
+                </div>
+                <div>
+                    <form action="{{ url_for('delete_user', login=usuario.login) }}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+                        <button type="submit" class="delete-btn">
+                            <img src="{{ url_for('static', filename='lixeira.png') }}" alt="Excluir">
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum usuário cadastrado.</p>
+        {% endif %}
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 <i>SENAI</i> Search - Desenvolvido por <a href="https://linktr.ee/lucasrrenan" target="_blank"><u> Lucas Renan</u></a>. Todos os direitos reservados.</p>
+      </footer>
+</body>
+</html>

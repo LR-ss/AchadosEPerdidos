@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="icon" href="{{ url_for('static', filename='senai_2.png') }}" type="image/png">
+
+</head>
+<body>
+    <header>
+        <h1>Meu Perfil</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Exibe a foto atual do usuário -->
+        <img src="{{ url_for('static', filename='imagens/' + usuario.foto) }}" alt="Foto de Perfil" width="100" class="imagem-perfil">
+        <h2>
+          {{ usuario.nome }}
+          {% if usuario.verificado %}
+            <img src="{{ url_for('static', filename='verificado.jpeg') }}" alt="Verificado" style="height: 24px; vertical-align: middle;">
+          {% endif %}
+        </h2>
+        <form method="POST" enctype="multipart/form-data">
+            <br>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" value="{{ usuario.nome }}" required><br><br>
+            
+            <label for="login">Apelido/Login:</label>
+            <input type="text" id="login" name="login" value="{{ usuario['login'] }}" required><br><br>
+
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" value="{{ usuario.senha }}" required>
+            <input type="checkbox" id="mostrar_senha" onclick="toggleSenha()"> Mostrar Senha<br><br>
+            <script src="{{ url_for('static', filename='js/script_3.js') }}"></script>
+
+            <label>Curso:</label>
+            <input type="text" name="curso" value="{{ usuario.curso }}" required>
+          
+            <label>Turno:</label>
+            <select name="turno" required>
+              <option value="Manhã"   {{ 'selected' if usuario.turno=='Manhã'   }}>Manhã</option>
+              <option value="Tarde"   {{ 'selected' if usuario.turno=='Tarde'   }}>Tarde</option>
+              <option value="Noite"   {{ 'selected' if usuario.turno=='Noite'   }}>Noite</option>
+            </select>
+            <br>
+            <br>
+          
+            <label>E-mail (opcional):</label>
+            <input type="email" name="email" value="{{ usuario.email or '' }}">
+            {% if usuario.email and not usuario.verificado %}
+  <div class="aviso-verificacao">
+    <p style="color: orange; font-weight: bold;">
+      Seu e-mail ainda não foi verificado.
+    </p>
+    <p>
+      Verifique sua caixa de entrada, na parte de spam ou lixeira para o link.
+    </p>
+  </div>
+{% endif %}
+
+
+            <label for="foto">Nova Foto de Perfil:</label>
+            <input type="file" id="foto" name="foto"><br><br>
+
+            <button type="submit">Atualizar Perfil</button>
+        </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+              <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 <i>SENAI</i> Search - Desenvolvido por <a href="https://linktr.ee/lucasrrenan" target="_blank"><u> Lucas Renan</u></a>. Todos os direitos reservados.</p>
+      </footer>
+    <script src="{{ url_for('static', filename='js/script_4.js') }}"></script>
+</body>
+</html>

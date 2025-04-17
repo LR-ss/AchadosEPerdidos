@@ -1,0 +1,63 @@
+<!-- templates/regras.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Regras do Site</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='senai_2.png') }}" type="image/png">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        a.voltar {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #0066cc;
+        }
+
+        a.voltar:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Regras de Uso do Site</h1>
+        <ul>
+            <li>O site é exclusivo para publicação de itens perdidos e encontrados com o intuito de auxiliar na devolução aos seus proprietários.</li>
+            <li>Não é permitido adicionar conteúdo impróprio, ofensivo, explícito ou que infrinja leis e boas práticas de convivência.</li>
+            <li>Itens podem ser denunciados por usuários logados que considerarem o conteúdo inadequado.</li>
+            <li>Se um item receber <strong>5 denúncias de usuários distintos</strong>, ele será automaticamente removido da página inicial.</li>
+            <li>Usuários com privilégio de administrador também podem excluir qualquer item que esteja fora das regras do site.</li>
+            <li>É proibido tentar enganar outros usuários com informações falsas ou manipuladas.</li>
+            <li>Usuários que descumprirem as regras estão sujeitos a advertência ou banimento da plataforma.</li>
+        </ul>
+        <a class="voltar" href="{{ url_for('index') }}">← Voltar para a Página Inicial</a>
+    </div>
+</body>
+</html>
